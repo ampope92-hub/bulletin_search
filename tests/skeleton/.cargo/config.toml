@@ -1,0 +1,6 @@
+# rustc 1.85 is the toolchain in this image. Several transitive crates have since raised
+# their minimum to 1.86 or 1.88, and the default resolver would pick those and fail the
+# build. The MSRV-aware resolver falls back to the newest version each crate published that
+# 1.85 can still compile.
+[resolver]
+incompatible-rust-versions = "fallback"

@@ -1,0 +1,329 @@
+[
+  {
+    "query_id": "q0001",
+    "query": "Which issue describes a discoloured natural resin coating thinned from the lacquer writing box with swabs of a hydrocarbon and alcohol blend, changing the swab very often?",
+    "issues": [
+      "issue_0056",
+      "issue_0080"
+    ]
+  },
+  {
+    "query_id": "q0002",
+    "query": "Which issue describes radiography of the glass roundel revealing an arsenic-bearing green in the border?",
+    "issues": [
+      "issue_0077",
+      "issue_0079"
+    ]
+  },
+  {
+    "query_id": "q0003",
+    "query": "Which issue describes the papier-mache tea tray kept at sixty per cent under a fifty lux limit?",
+    "issues": [
+      "issue_0099",
+      "issue_0204"
+    ]
+  },
+  {
+    "query_id": "q0004",
+    "query": "Which issue describes imaging that sees below the surface of the papier-mache tea tray revealing a mercury-based red beneath a later overpaint?",
+    "issues": [
+      "issue_0060",
+      "issue_0166"
+    ]
+  },
+  {
+    "query_id": "q0005",
+    "query": "Which issue describes greasy handling grime thinned from the papier-mache tea tray with grated vinyl crumb, in brief strokes that each covered the last?",
+    "issues": [
+      "issue_0105",
+      "issue_0114"
+    ]
+  },
+  {
+    "query_id": "q0006",
+    "query": "Which issue describes a sprayed low-molecular-weight resin applied to the plaster wall relief after strengthening of the dusty surface?",
+    "issues": [
+      "issue_0006"
+    ]
+  },
+  {
+    "query_id": "q0007",
+    "query": "Which issue describes crizzled surface on the glass roundel, set down with a thickened plant-cellulose preparation under gentle vacuum suction?",
+    "issues": [
+      "issue_0078"
+    ]
+  },
+  {
+    "query_id": "q0008",
+    "query": "Which issue describes imaging that sees below the surface of the lacquer writing box revealing a drying oil bound with a little pine resin?",
+    "issues": [
+      "issue_0033",
+      "issue_0064",
+      "issue_0105"
+    ]
+  },
+  {
+    "query_id": "q0009",
+    "query": "Which issue describes black residue from smoke thinned from the leather bookbinding with swabs of a hydrocarbon and alcohol blend, in one direction only?",
+    "issues": [
+      "issue_0205"
+    ]
+  },
+  {
+    "query_id": "q0010",
+    "query": "Which issue describes threads that had gone dry and snapped easily on the wool tapestry, set down with a seaweed-derived size under a heated spatula?",
+    "issues": [
+      "issue_0070",
+      "issue_0095"
+    ]
+  },
+  {
+    "query_id": "q0011",
+    "query": "Which issue describes webbing clothes moth in the silk altar frontal dealt with by controlled freezing with staged warming?",
+    "issues": [
+      "issue_0048",
+      "issue_0165",
+      "issue_0170"
+    ]
+  },
+  {
+    "query_id": "q0012",
+    "query": "Which issue describes infrared spectroscopy of the papier-mache tea tray revealing a double ground of chalk under lead white?",
+    "issues": [
+      "issue_0117",
+      "issue_0148"
+    ]
+  },
+  {
+    "query_id": "q0013",
+    "query": "Which issue describes a buffed microcrystalline wax applied to the pewter tankard after strengthening of the dusty surface?",
+    "issues": [
+      "issue_0077",
+      "issue_0133"
+    ]
+  },
+  {
+    "query_id": "q0014",
+    "query": "Which issue describes Raman microscopy of the oak chest revealing an arm first sketched in a different place?",
+    "issues": [
+      "issue_0054",
+      "issue_0214"
+    ]
+  },
+  {
+    "query_id": "q0015",
+    "query": "Which issue describes a discoloured natural resin coating thinned from the wool tapestry with cotton swabs carrying mixed spirits, with frequent renewal of the swab?",
+    "issues": [
+      "issue_0004",
+      "issue_0021",
+      "issue_0143"
+    ]
+  },
+  {
+    "query_id": "q0016",
+    "query": "Which issue describes greasy handling grime thinned from the silk altar frontal with cotton swabs carrying mixed spirits, in short overlapping passes?",
+    "issues": [
+      "issue_0063",
+      "issue_0117"
+    ]
+  },
+  {
+    "query_id": "q0017",
+    "query": "Which issue describes adhesive residue from old tape thinned from the plaster wall relief with a pulsed laser at low fluence, in brief strokes that each covered the last?",
+    "issues": [
+      "issue_0108",
+      "issue_0163"
+    ]
+  },
+  {
+    "query_id": "q0018",
+    "query": "Which issue describes a yellowed layer of tree resin thinned from the plaster wall relief with swabs of a hydrocarbon and alcohol blend, in short overlapping passes?",
+    "issues": [
+      "issue_0112",
+      "issue_0127",
+      "issue_0189"
+    ]
+  },
+  {
+    "query_id": "q0019",
+    "query": "Which issue describes greasy handling grime thinned from the bronze votive figure with cotton swabs carrying mixed spirits, in one direction only?",
+    "issues": [
+      "issue_0002",
+      "issue_0073",
+      "issue_0141"
+    ]
+  },
+  {
+    "query_id": "q0020",
+    "query": "Which issue describes microscopic study of a cut sample of the vellum choir book revealing bast fibre in the warp and protein fibre in the weft?",
+    "issues": [
+      "issue_0138"
+    ]
+  },
+  {
+    "query_id": "q0021",
+    "query": "Which issue describes X-ray fluorescence of the papier-mache tea tray revealing plant thread one way and animal thread the other?",
+    "issues": [
+      "issue_0137"
+    ]
+  },
+  {
+    "query_id": "q0022",
+    "query": "Which issue describes flaking paint on the pewter tankard, set down with a thickened plant-cellulose preparation through fine tissue?",
+    "issues": [
+      "issue_0033",
+      "issue_0036"
+    ]
+  },
+  {
+    "query_id": "q0023",
+    "query": "Which issue describes the grubs of a carpet-eating beetle in the wool tapestry dealt with by isolation and monitoring with blunder traps?",
+    "issues": [
+      "issue_0034",
+      "issue_0120"
+    ]
+  },
+  {
+    "query_id": "q0024",
+    "query": "Which issue describes threads that had gone dry and snapped easily on the wool tapestry, set down with a wheat starch paste by capillary feed along the edge?",
+    "issues": [
+      "issue_0008",
+      "issue_0085"
+    ]
+  },
+  {
+    "query_id": "q0025",
+    "query": "Which issue describes a matte cellulose ether film applied to the lacquer writing box after stripping of the previous finish?",
+    "issues": [
+      "issue_0039",
+      "issue_0200"
+    ]
+  },
+  {
+    "query_id": "q0026",
+    "query": "Which issue describes cupped and tented ground on the plaster wall relief, set down with a weak synthetic polymer solution with a fine brush under magnification?",
+    "issues": [
+      "issue_0112",
+      "issue_0128",
+      "issue_0185"
+    ]
+  },
+  {
+    "query_id": "q0027",
+    "query": "Which issue describes waste matter left by insects thinned from the papier-mache tea tray with a rigid chelating gel, with frequent renewal of the swab?",
+    "issues": [
+      "issue_0080",
+      "issue_0155",
+      "issue_0202"
+    ]
+  },
+  {
+    "query_id": "q0028",
+    "query": "Which issue describes brittle fibres on the silk altar frontal, set down with a thickened plant-cellulose preparation by capillary feed along the edge?",
+    "issues": [
+      "issue_0053",
+      "issue_0078",
+      "issue_0147"
+    ]
+  },
+  {
+    "query_id": "q0029",
+    "query": "Which issue describes the silk altar frontal rehoused in a metal strap fitting with a protective finish, padded with silk crepeline?",
+    "issues": [
+      "issue_0063",
+      "issue_0099",
+      "issue_0173"
+    ]
+  },
+  {
+    "query_id": "q0030",
+    "query": "Which issue describes the linen sampler kept at fifty-five per cent under a higher light ceiling with yearly rest periods?",
+    "issues": [
+      "issue_0097",
+      "issue_0175"
+    ]
+  },
+  {
+    "query_id": "q0031",
+    "query": "Which issue describes microscopic study of a cut sample of the linen sampler revealing bast fibre in the warp and protein fibre in the weft?",
+    "issues": [
+      "issue_0097",
+      "issue_0172",
+      "issue_0194"
+    ]
+  },
+  {
+    "query_id": "q0032",
+    "query": "Which issue describes a discoloured natural resin coating thinned from the glass roundel with a cellulose poultice, changing the swab very often?",
+    "issues": [
+      "issue_0148"
+    ]
+  },
+  {
+    "query_id": "q0033",
+    "query": "Which issue describes adhesive residue from old tape thinned from the leather bookbinding with cotton swabs carrying mixed spirits, in one direction only?",
+    "issues": [
+      "issue_0121",
+      "issue_0199"
+    ]
+  },
+  {
+    "query_id": "q0034",
+    "query": "Which issue describes the lacquer writing box kept at thirty-five per cent under a fifty lux limit?",
+    "issues": [
+      "issue_0079",
+      "issue_0131",
+      "issue_0156"
+    ]
+  },
+  {
+    "query_id": "q0035",
+    "query": "Which issue describes the lacquer writing box kept at a slightly damp level of moisture under filtered daylight only?",
+    "issues": [
+      "issue_0079",
+      "issue_0088",
+      "issue_0144"
+    ]
+  },
+  {
+    "query_id": "q0036",
+    "query": "Which issue describes flaking paint on the silver caddy spoon, set down with a dilute acrylic resin by capillary feed along the edge?",
+    "issues": [
+      "issue_0109",
+      "issue_0110",
+      "issue_0194"
+    ]
+  },
+  {
+    "query_id": "q0037",
+    "query": "Which issue describes microscopy using polarised illumination of the ivory hair comb revealing a double ground of chalk under lead white?",
+    "issues": [
+      "issue_0012"
+    ]
+  },
+  {
+    "query_id": "q0038",
+    "query": "Which issue describes adhesive residue from old tape thinned from the pewter tankard with a stiff gel holding a metal-binding agent, in short overlapping passes?",
+    "issues": [
+      "issue_0006",
+      "issue_0019"
+    ]
+  },
+  {
+    "query_id": "q0039",
+    "query": "Which issue describes microscopic study of a cut sample of the vellum choir book revealing a drying oil bound with a little pine resin?",
+    "issues": [
+      "issue_0011",
+      "issue_0042",
+      "issue_0209"
+    ]
+  },
+  {
+    "query_id": "q0040",
+    "query": "Which issue describes a sprayed low-molecular-weight resin applied to the ivory hair comb after colouring the fills using powdered pigment?",
+    "issues": [
+      "issue_0079",
+      "issue_0212"
+    ]
+  }
+]

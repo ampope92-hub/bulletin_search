@@ -4,49 +4,75 @@
 # (difficulty/solution/verification/relevant_experience) are what a reviewer reads
 # first — write them last, once the task actually works, and write them honestly.
 
-name = "REPLACE-task-slug"
+name = "bulletin-search"
 
-# Paths the SEPARATE verifier reads out of the agent's final container. Declare the
-# whole project directory when the verifier needs to rebuild or re-run the agent's
-# own sources, not just inspect an output file.
-artifacts = ["/app/"]
+# Paths the SEPARATE verifier reads out of the agent's final container.
+# The verifier rebuilds and re-runs the agent's own crate, so it needs the sources rather
+# than an output file. The corpus and the query files are deliberately NOT collected: the
+# verifier serves its own copies, so both graded runs are over inputs the agent never saw.
+# Must stay top-level -- nested under [verifier] the value is silently dropped.
+artifacts = [
+    "/app/search/src/",
+    "/app/search/Cargo.toml",
+    "/app/search/Cargo.lock",
+]
 
 [metadata]
-author_name = "REPLACE"
-author_email = "REPLACE"
+author_name = "anonymous"
+author_email = "anonymous"
 
 # category must be one of: Science, Software, ML, Operations, Security, Hardware, Media
 # subcategory is an open list — see the taxonomy for the conventional values.
-category = "REPLACE"
-subcategory = "REPLACE"
-tags = ["REPLACE", "3-to-6", "descriptive", "keywords"]
-languages = ["REPLACE"]
+category = "ML"
+subcategory = "Inference"
+tags = ["rust", "candle", "huggingface", "embeddings", "retrieval"]
+languages = ["rust", "bash"]
 
 # One of: base, core, advanced, frontier — set from measured pass rates, not by feel.
-difficulty = "REPLACE"
-expert_time_estimate_hours = 0  # REPLACE with a real best-case estimate for a domain expert
+difficulty = "core"
+expert_time_estimate_hours = 3
 
-difficulty_explanation = """\
-REPLACE. What specifically defeats a strong agent here? Name the concrete traps and \
-why partial progress still fails. A reviewer who does not know your domain should \
-finish this paragraph understanding the shape of the difficulty.\
+difficulty_explanation = """
+The agent writes a retrieval pipeline in Rust: index 220 newsletter issues, by embedding with the checkpoint on offer or by any other route, and rank ten issues per question well enough to clear a mean nDCG@10 of 0.65. Every piece of that is reachable. What decides the outcome is one choice that is easy to make wrong and gives no sign of being wrong until the score comes back.
+
+An issue is about 700 tokens and holds a dozen items that have nothing to do with each other: a moth infestation in a tapestry sits next to a humidity specification and an X-ray finding. A question is about exactly one of those items. The checkpoint is a mean-pooling encoder, so whatever span is handed to it comes back as one vector averaged over every token in it. Embed a whole issue and the one item the question is about is averaged with eleven it is not, and the signal is gone. A lexical score over the whole issue fails the same way, since the matching terms are diluted by the length of eleven items about something else. The usual reflex, cutting the document into fixed-size chunks, does not rescue it, because the natural chunk sizes are all far larger than an item. Only a representation that goes down to the individual item works, and the issues carry their own item boundaries in the markup, so the information needed is on the page.
+
+The measured spread is wide and the ordering is not what a chunking habit would predict. Splitting on item boundaries and scoring an issue by its best-matching item reaches 0.858 on the graded questions and 0.826 on the held-back ones. A 126-token sliding window with 50 per cent overlap, which is already finer than most defaults, reaches 0.468 and 0.438. Fixed 254-token windows reach 0.257 and 0.211, and are beaten by BM25 over whole issues, with no model loaded at all, at 0.358 and 0.459. Embedding each issue once, truncated at the checkpoint's own 256-token limit, reaches 0.147 and 0.224. BM25 over the items, on the other hand, reaches 0.872 and 0.922, which is why the task does not insist on the model: the choice that decides the outcome is the unit that gets scored, not the scorer. So a pipeline that is correct in every other respect, and that looks like ordinary practice, lands at roughly half the bar.
+
+Two further things have to hold at the same time. The pooling has to be masked: batching sequences of different lengths means padding, and averaging the padded positions in makes an item's vector depend on what else shared its batch. And the program is re-run against questions it has never seen, on a machine with no network and the checkpoint already cached, so anything that special-cases the visible query file, or that reaches for the network at run time rather than using what it already fetched, passes the first run and fails the second.
+
+The corpus is synthetic. Items are generated compositionally from vocabularies of materials, damage types, treatments, mounts and environmental specifications, filtered so that only combinations a conservator could actually have written are produced, and questions are paraphrases of the item they point at. I tried pushing the paraphrases far enough from the items to starve a lexical route, and the embedding route lost accuracy at the same rate, so there is no wording that separates the two, and the task is honest about that. The underlying job is real and ordinary: searching a long-running archive of bundled short-form documents, which is the shape of most newsletters, bulletins, release notes and meeting minutes, and where whole-document embedding quietly fails for exactly this reason.
 """
 
-solution_explanation = """\
-REPLACE. The reference approach at a level someone could follow without reading \
-solve.sh — what has to be discovered, in what order, and what the key insight is.\
+solution_explanation = """
+Read every issue in /app/corpus and split it on its own item boundaries: an issue is a masthead line and then one item per blank-line-separated block, so dropping the first block leaves one string per item. Load sentence-transformers/all-MiniLM-L6-v2 at the pinned revision through hf-hub, build the BERT model with candle from the safetensors weights, and embed every item. Pooling is the mean over token positions followed by L2 normalisation, which is what this checkpoint was trained to produce; batching sorts by length and carries an attention mask so padded positions are excluded from the mean. Embed each question the same way, score an issue by the highest cosine similarity of any of its items against the question, sort, and write the top ten to /app/rankings.json.
+
+The insight is the granularity, and it is the only place a competent implementation goes wrong. Everything else is ordinary work: about 2,600 items get encoded, which takes roughly five minutes on two cores when batched and about nine one at a time, and the ranking itself is a dot product. Reading the query file at run time rather than baking in the visible questions, and relying on the hf-hub cache rather than a fresh fetch, is what makes the same binary work on the second run.
+
+solution/main.rs is the reference. It scores 0.858 on the graded questions and 0.826 on the held-back ones, against a bar of 0.65 on the graded run and 0.60 on the held-back one, the figure instruction.md states for it, so nothing enforced is tighter than what the agent is told. solution/calibrate.py re-derives the whole table of routes in the difficulty explanation directly from the shipped fixtures, and solution/generate_corpus.py regenerates every fixture the task ships from its seed.
 """
 
-verification_explanation = """\
-REPLACE. What the verifier grades, how it grades it, and why passing it is only \
-possible by actually doing the work. Call out each independent axis of failure.\
+verification_explanation = """
+The verifier is a separate container with no network. It collects only the agent's crate sources and the rankings.json left in /app; the corpus and the query files are deliberately not collected, and are served from the verifier image's own copies, so both graded runs are provably over inputs the agent could not have touched. The checkpoint is baked into the image at build time, written by the same library the agent's code reads it back with, so the offline runs resolve it from cache without a request.
+
+Grading is not an inspection of the submitted file. The agent's sources are copied over a dependency tree already compiled into the image and rebuilt from scratch as an unprivileged user, then run twice. The first run answers the query file that shipped in the environment. The second answers sixty questions held back in the verifier image, swapped into the same path, over the same issues under fresh ids: every file is renamed by a fixed shift of its number with its masthead rewritten to match and the answer key carried through the same map, so a program that reads /app/corpus when it runs is unaffected, while one that compiled the corpus into its source answers with ids that now belong to other issues and fails the held-back bar. The checkpoint is available in the cache and named in the instruction, but nothing in the contract requires it and nothing checks for it: measured in solution/calibrate.py, BM25 over the same item split scores 0.872 on the graded queries and 0.922 on the held-back ones, above the reference's 0.858 and 0.826, so on this corpus the model is a means and not the axis. What the bars grade is granularity: item-level retrieval by either route clears them with margin, and every route that stops short of it, sliding windows, whole-issue embeddings, whole-issue BM25, falls well under. The cheat_bm25_no_model arm, a lexical retriever with no model, is run through the real verifier and scores 1, which is what that claim rests on.
+
+That second run is what closes the obvious hole. Sixty visible questions with no answer key is few enough that a capable agent could work the answers out by reading rather than by building a search, and hand a correct rankings.json over without a pipeline behind it. Nothing hand-assembled survives being handed a different query file, so the held-back run measures the program rather than the answer.
+
+Five checks run. Cargo.toml and Cargo.lock have to come back byte for byte as shipped; the verifier compares them before building and builds with the shipped copies either way, so a crate promoted from the cache to a direct dependency on a regenerated lock is caught rather than compiled. Shape is enforced on both runs: one entry per question asked and no others, exactly ten distinct issue ids drawn from the corpus. The two nDCG bars are separate checks so a failure says which run fell short.
+The bars sit in a gap established in solution/calibrate.py against the shipped fixtures. The reference clears its bar by 0.208 on the graded set (0.858 against 0.65) and by 0.226 on the held-back one (0.826 against 0.60). The best route that stops short of item granularity is a 126-token sliding window at 0.468 and 0.438, and BM25 over whole issues is at 0.358 and 0.459, so every route that keeps the issue whole or chunks it by length misses by at least 0.14 and most miss by more than 0.3. BM25 over the items clears both bars at 0.872 and 0.922, as the reference does at 0.858 and 0.826, so the bars sit under both item-level routes and above everything else.
+
+The arms were run against the finished task rather than asserted. The reference scores 1. A do-nothing run scores 0. cheat_bm25_no_model, a BM25 retriever over the item split with no model loaded, scores 1, which is the measurement behind not requiring the checkpoint. oracle_whole_issue is the reference with one constant flipped, so each issue is embedded as a single span instead of item by item, and it scores 0 at 0.089 on the graded questions and 0.194 on the held-back ones, against bars of 0.65 and 0.60. cheat_frozen_rankings is the hand-written-answers attack at full strength, a program with a perfect answer key for the sixty graded questions compiled into it and no retrieval behind it: it scores 1.0 on the first run and then has no ranking for any of the sixty held-back questions, so it scores 0.
+
+The build runs with --offline, which is what holds the line the instruction states about not adding crates: a Cargo.toml that pulled in something new cannot be satisfied here. Agent code is executed in this container, so it runs as `runner` with /tests closed to it, in its own session whose process group is torn down after each run, and each run's output is moved to a root-owned file before any further agent code runs. A path that is not a regular file is discarded rather than staged, so a symlink cannot point grading at the verifier's own keys, and pytest is invoked with -P so a planted /app/pytest.py cannot stand in for the suite.
 """
 
 # NOTE: this one is a claim about you, not about the task. Rewrite it to match your
 # actual background before submitting; generic statements fail review.
-relevant_experience = """\
-REPLACE. The professional experience that qualifies you to set the difficulty and \
-correctness bar for this task.\
+relevant_experience = """
+I build and evaluate retrieval systems, mostly over archives nobody designed to be searched: newsletters, release notes, incident write-ups, minutes. The failure in this task is the one I see most often in production. A team embeds whole documents, the numbers on their labelled examples look reasonable, and recall on real questions is quietly terrible, because their documents are bundles of unrelated short pieces and a mean-pooled vector of a bundle is not about anything. Getting the granularity right, and knowing that the standard chunk sizes are not fine enough when the unit of meaning is a paragraph, is most of the work.
+
+Calibrating this one meant establishing the whole ladder rather than asserting it: truncation at the checkpoint's own limit, three fixed window sizes, mean over items as well as max, and a BM25 baseline, each scored on the shipped questions and on the held-back set, so the bar could be placed in a gap I had measured rather than one I assumed. Pushing the paraphrase distance between a question and the item it points at was a two-sided exercise, since the wording that starves a lexical baseline costs the embedding model accuracy at the same rate, and I swept that trade-off before settling on the corpus as shipped and on not requiring the model.
 """
 
 # Network policy is set per phase. [environment] is the baseline and MUST be
@@ -56,7 +82,10 @@ correctness bar for this task.\
 # rather than relying on inheritance from the baseline.
 
 [verifier]
-timeout_sec = 600
+# The agent's program is built once and run twice in here, over roughly 2,600 items each
+# time. The reference takes about five minutes a run; a program that encodes one item at a
+# time rather than in batches takes nearer nine, and should still finish comfortably.
+timeout_sec = 3600
 network_mode = "no-network"
 # "separate" is required: the verifier runs in its own container built from
 # tests/Dockerfile, after the agent's container is torn down. Tests and oracle data
@@ -64,14 +93,17 @@ network_mode = "no-network"
 environment_mode = "separate"
 
 [agent]
-timeout_sec = 3600
-# "no-network" if the task is meant to be solved offline; "public" if it genuinely
-# needs internet access. REPLACE to match your task.
-network_mode = "no-network"
+# A single end-to-end run of the pipeline costs several minutes, so the budget has to cover
+# a number of iterations rather than one attempt.
+timeout_sec = 7200
+# The checkpoint on offer is a 90 MB weights file, past the 50 MB per-file limit on
+# environment/, so it cannot be shipped in the image and has to come from the Hub at solve
+# time for an agent that wants it.
+network_mode = "public"
 
 [environment]
 network_mode = "public"
-build_timeout_sec = 600
+build_timeout_sec = 1800
 cpus = 2
 memory_mb = 8192
 storage_mb = 10240

@@ -1,19 +1,23 @@
-# Agent image. Nothing from tests/ or solution/ may ever be copied in here.
-#
-# Pin the base by digest so the image can never drift. To re-pin after changing the
-# tag:  docker buildx imagetools inspect <image>:<tag>
-# REPLACE this base with whatever your task actually needs.
-FROM public.ecr.aws/docker/library/gcc:13-bookworm@sha256:930f2ebe239275fa67226654cb79273ea34eee672ae61c8a39f689c37fb7ac5c
+FROM public.ecr.aws/docker/library/rust:1.85-slim@sha256:9f841bbe9e7d8e37ceb96ed907265a3a0df7f44e3737d0b100e7907a679acb36
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        asciinema \
+# pkg-config and libssl-dev are what the HTTP stack underneath hf-hub links against; without
+# them the crate that reaches the Hub fails to build with an unhelpful OPENSSL_DIR error.
+RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
-        python3 \
+        pkg-config \
+        libssl-dev \
         tmux \
+        asciinema \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY app/src/ /app/src/
-COPY app/data/ /app/data/
+COPY corpus/ /app/corpus/
+COPY queries/ /app/queries/
+COPY search/ /app/search/
+
+# Compile the dependency tree into the image. The task is solved with the network open, but
+# the crates must not have to be fetched to build: only the agent's own sources recompile.
+RUN cd /app/search && cargo build --release --locked && rm -rf /app/search/target/release/incremental
+
+CMD ["/bin/bash"]

@@ -1,4 +1,12 @@
-out/
-__pycache__/
 .git
-*.log
+.gitignore
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/target/
+**/.venv/
+**/venv/
+**/node_modules/
+**/.env
+solution/
+tests/
